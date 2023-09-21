@@ -44,7 +44,7 @@ To get started with Kubernetes and explore the example projects in this reposito
 
 Here's a list of example projects you can find in this repository:
 
-- [configmap-and-secrets-with-volumes](./project-1/): An example of how to use configmap and secrets with volumes in a demployment
+- [configmap-and-secrets-with-volumes](https://github.com/jtysorin/kubernetes-examples/tree/configmap-and-secrets-with-volumes): An example of how to use configmap and secrets with volumes in a demployment
 
 Explore each project's directory to find specific documentation and resources for that project.
 
