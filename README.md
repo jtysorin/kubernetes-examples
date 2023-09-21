@@ -1,61 +1,55 @@
-# Kubernetes Example Projects
+# ConfigMap and Secrets with Volumes Demo
 
-Welcome to the Kubernetes Example Projects repository! This repository serves as a collection of example projects and resources for working with Kubernetes. Whether you're new to Kubernetes or an experienced user, you'll find valuable content here to help you learn, experiment, and accelerate your Kubernetes journey.
+This Kubernetes demo project illustrates how to use ConfigMaps and Secrets as volumes in a Kubernetes Deployment. Specifically, it demonstrates how to configure a Mosquitto MQTT broker with and without these volume types.
 
-## Table of Contents
+## Prerequisites
 
-1. [Introduction](#introduction)
-2. [Getting Started](#getting-started)
-3. [Example Projects](#example-projects)
-4. [Contributing](#contributing)
-5. [License](#license)
+Before getting started, make sure you have the following prerequisites:
 
-## Introduction
+- A running Kubernetes cluster.
+- `kubectl` command-line tool installed and configured to access your cluster.
 
-Kubernetes is a powerful container orchestration platform that simplifies the deployment, scaling, and management of containerized applications. This repository aims to provide you with practical examples and resources to:
+## Project Structure
 
-- Understand Kubernetes concepts and best practices.
-- Explore real-world use cases and scenarios.
-- Experiment with sample applications and configurations.
-- Learn from documented examples and tutorials.
+The project contains the following YAML files:
 
-## Getting Started
+- `mosquitto-without-volume.yaml`: Deploys a Mosquitto MQTT broker without ConfigMap or Secret volumes.
+- `config-file.yaml`: Defines a ConfigMap named `mosquitto-config-file` that contains the Mosquitto configuration.
+- `secret-file.yaml`: Defines a Secret named `mosquitto-secret-file` containing a secret file.
+- `mosquitto.yaml`: Deploys a Mosquitto MQTT broker with ConfigMap and Secret volumes.
 
-To get started with Kubernetes and explore the example projects in this repository, follow these steps:
+## Usage
 
-1. **Clone the Repository:** Clone this repository to your local machine using Git:
+### Deploy Mosquitto without Volumes
 
-   ```bash
-   git clone https://github.com/your-username/kubernetes-example-projects.git
-   ```
+To deploy Mosquitto without ConfigMap or Secret volumes, apply the following YAML file:
 
-2. **Choose an Example Branch:** Each example project is located in a separate branch. To begin working with a specific example, switch to the corresponding branch using Git:
-    ```
-    git checkout branch-name
-    ```
+```bash
+kubectl apply -f mosquitto-without-volume.yaml
+```
+You can then access the Mosquitto pod and check its configuration:
 
-    Replace `branch-name` with the name of the branch that corresponds to the example project you want to explore.
+```bash
+kubectl exec -it <pod-name> -- /bin/sh
+cat /mosquitto/config/mosquitto.conf
+```
 
-3. **Follow Documentation:** Once you're on the example project's branch, refer to its README.md file for detailed instructions on how to set up and use the Kubernetes resources.
+### Deploy Mosquitto with Volumes
 
-4. **Experiment:** Modify and experiment with the example as needed. Feel free to contribute your improvements and findings!
+To deploy Mosquitto with ConfigMap and Secret volumes, apply the following YAML files:
 
-## Example Projects
+```bash
+kubectl apply -f config-file.yaml
+kubectl apply -f secret-file.yaml
+kubectl apply -f mosquitto.yaml
+```
 
-Here's a list of example projects you can find in this repository:
+This will create the necessary ConfigMap and Secret, and deploy Mosquitto with these volumes attached.
 
-- [configmap-and-secrets-with-volumes](./project-1/): An example of how to use configmap and secrets with volumes in a demployment
+You can access the Mosquitto pod and verify the presence of the configuration and secret files:
 
-Explore each project's directory to find specific documentation and resources for that project.
-
-## License
-
-This repository is licensed under the MIT License, which means you are free to use, modify, and distribute the code as you see fit. However, we appreciate attribution if you find this repository helpful.
-
----
-
-Happy Kubernetes hacking! If you have any questions, suggestions, or issues, please don't hesitate to open an issue or reach out to us.
-
-
-
-   
+```bash
+kubectl exec -it <pod-name> -- /bin/sh
+cat /mosquitto/config/mosquitto.conf
+cat /mosquitto/secret/secret.file
+```
